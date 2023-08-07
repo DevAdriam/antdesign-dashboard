@@ -1,6 +1,8 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
+import { setData } from "../../Features/Users/Userslice";
 
 const columns = [
     {
@@ -24,6 +26,12 @@ const columns = [
 ];
 
 export const UserTable = () => {
+    const { data } = useFetchUsers();
+    const dispatch = useDispatch();
+
+    if (data) {
+        dispatch(setData(data.data.data));
+    }
     const rows = useSelector((state) => state.user.userList);
 
     return (
@@ -34,7 +42,7 @@ export const UserTable = () => {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 5,
+                            pageSize: 4,
                         },
                     },
                 }}

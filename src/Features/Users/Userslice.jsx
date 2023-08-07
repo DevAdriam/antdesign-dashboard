@@ -15,6 +15,7 @@ export const userSlice = createSlice({
         },
         setData: (state, action) => {
             state.loading = false;
+            console.log(action.payload);
             state.userList = action.payload;
         },
         setError: (state, action) => {

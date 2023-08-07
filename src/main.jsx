@@ -6,11 +6,16 @@ import { Provider } from "react-redux";
 import { store } from "./App/store.jsx";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Routes/Route.jsx";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <Provider store={store}>
-            <RouterProvider router={router} />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <RouterProvider router={router} />
+            </Provider>
+        </QueryClientProvider>
     </React.StrictMode>
 );

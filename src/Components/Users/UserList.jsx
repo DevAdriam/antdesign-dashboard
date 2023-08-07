@@ -1,23 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
 
 const UserList = () => {
-    const data = useSelector((state) => state.user.userList);
-    const isLoading = useSelector((state) => state.user.loading);
-    const isError = useSelector((state) => state.user.error);
+    const { isLoading, isError, error, data } = useFetchUsers();
 
     if (isLoading) {
-        return <h2>Loading</h2>;
+        return <h2>Loading...</h2>;
     }
-
     if (isError) {
-        return <h2>Error</h2>;
+        return <h2>{error.message}</h2>;
     }
 
     return (
         <div>
             <ul>
-                {data?.map((user) => {
+                {data.data.data.map((user) => {
                     return <li key="user.id">{user.username}</li>;
                 })}
             </ul>

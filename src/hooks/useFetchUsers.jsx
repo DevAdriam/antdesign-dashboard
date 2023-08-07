@@ -1,41 +1,19 @@
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { BACKEND_URL } from "../config";
-import { useDispatch } from "react-redux";
-import { setData, setError, setLoading } from "../Features/Users/Userslice";
+
+const getUsers = async () => {
+    const data = await fetch("http://localhost:3001")
+        .then((res) => res.json())
+        .catch((err) => err.response);
+    console.log(data);
+    return data;
+};
 
 export const useFetchUsers = () => {
-    const dispatch = useDispatch();
-
-    return async () => {
-        try {
-            dispatch(setLoading(true));
-            const res = await axios({
-                url: BACKEND_URL,
-                method: "get",
-                headers: {
-                    "Allow-Control-Access-Origin": "*",
-                    "Content-Type": "application/json",
-                },
-            })
-                .then((res) => res.json())
-                .catch((err) => err.response);
-
-            if (res.data.success) {
-                let userData = await res.data.data.map((user) => {
-                    ({
-                        id: user.id,
-                        username: user.username,
-                        password: user.password,
-                    });
-                });
-                dispatch(setLoading(false));
-                dispatch(setData(userData));
-            } else {
-                dispatch(setLoading(false));
-                dispatch(setError("UserList not found"));
-            }
-        } catch (err) {
-            dispatch(setError(err));
-        }
-    };
+    return useQuery({
+        queryKey: ["userList"],
+        queryFn: getUsers,
+        refetchOnMount: false,
+        staleTime: 1000000,
+    });
 };
