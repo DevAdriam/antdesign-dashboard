@@ -8,7 +8,7 @@ export const useFetchUsers = () => {
         const dispatch = useDispatch();
 
         try {
-            dispatch(setLoading());
+            dispatch(setLoading(true));
             const res = await axios({
                 url: BACKEND_URL,
                 method: "get",
@@ -28,9 +28,10 @@ export const useFetchUsers = () => {
                         password: user.password,
                     });
                 });
-
+                dispatch(setLoading(false));
                 dispatch(setData(userData));
             } else {
+                dispatch(setLoading(false));
                 dispatch(setError("UserList not found"));
             }
         } catch (err) {
