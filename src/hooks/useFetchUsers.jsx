@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { setData, setError, setLoading } from "../Features/Users/Userslice";
 
 export const useFetchUsers = () => {
-    return async () => {
-        const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
+    return async () => {
         try {
             dispatch(setLoading(true));
             const res = await axios({
